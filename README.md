@@ -1,2 +1,0 @@
-# Projeto-IP
-Sistema-Interativo 
