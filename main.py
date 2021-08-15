@@ -28,6 +28,12 @@ def main():
     is_bottom = True
     is_go_up = False
 
+    #pterodatyl
+    imgPtero = pygame.image.load('images/pterodatyl.png')
+    pterodatyl_height = imgPtero.get_size()[1]
+    pterodatyl_x = MAX_WIDTH
+    pterodatyl_y = (MAX_HEIGHT - pterodatyl_height) - 100
+
     # tree
     imgTree = pygame.image.load('images/cacti.png')
     tree_height = imgTree.get_size()[1]
@@ -66,6 +72,14 @@ def main():
         tree_x -= 12
         if tree_x <= 0:
             tree_x = MAX_WIDTH + random.randint(0, 300)
+
+        # pterodatyl movement
+        pterodatyl_x -= 12
+        if pterodatyl_x <=0:
+            pterodatyl_x = MAX_WIDTH + random.randint(0,500)
+
+        # draw pterodatyl
+        screen.blit(imgPtero, (pterodatyl_x, pterodatyl_y))
 
         # draw tree
         screen.blit(imgTree, (tree_x, tree_y))
