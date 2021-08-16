@@ -41,7 +41,7 @@ def main():
     #pterodatyl
     imgPtero = pygame.image.load('images/pterodatyl.png')
     pterodatyl_height = imgPtero.get_size()[1]
-    pterodatyl_x = MAX_WIDTH
+    pterodatyl_x = 30000
     pterodatyl_y = (MAX_HEIGHT - pterodatyl_height) - 160
 
     # tree
@@ -80,15 +80,17 @@ def main():
             is_bottom = True
             dino_y = dino_bottom
 
-        # tree movement
+        # movimento do cacto e pterodatyl
         tree_x -= 12
-        if tree_x <= 0:
-            tree_x = MAX_WIDTH + random.randint(0, 300)
-
-        # pterodatyl movement
         pterodatyl_x -= 12
-        if pterodatyl_x <=0:
-            pterodatyl_x = MAX_WIDTH + random.randint(0,500)
+        if tree_x <= 0 or pterodatyl_x <=0:
+            tipo_obstaculo = random.randint(0,1)
+            if tipo_obstaculo == 0:
+                tree_x = MAX_WIDTH + random.randint(0, 200)
+                pterodatyl_x = 30000
+            else:
+                pterodatyl_x = MAX_WIDTH + random.randint(0,200)
+                tree_x = 30000
 
         # draw pterodatyl
         screen.blit(imgPtero, (pterodatyl_x, pterodatyl_y))
