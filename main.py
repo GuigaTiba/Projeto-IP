@@ -110,7 +110,7 @@ def main():
                 ptero_x = MAX_WIDTH + randint(0,200)
                 tree_x = 5000
         
-        # velocidade mod
+        # velocidade
         if velocidade <= 30:
             velocidade += 0.01
 
