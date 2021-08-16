@@ -28,13 +28,17 @@ def main():
     dino = imgDino1.get_rect()
     dino_height = dino[3]
     dino_width = dino[2]
-    dino_bottom = 320
+    dino_bottom = 240
     dino_x = 75
     dino_y = dino_bottom
-    jump_top = 150
+    jump_top = 70
     leg_swap = True
     is_bottom = True
     is_go_up = False
+
+    # Background
+    imgBg = pygame.image.load('images/dia3.png')
+    
 
     # pterodatyl
     imgPtero = pygame.image.load('images/pterodatyl.png')
@@ -42,7 +46,7 @@ def main():
     ptero_height = ptero[3]
     ptero_width = ptero[2]
     ptero_x = MAX_WIDTH + 5000
-    ptero_y = (MAX_HEIGHT - ptero_height) - 160
+    ptero_y = (MAX_HEIGHT - ptero_height) - 230
 
     # tree
     imgTree = pygame.image.load('images/cacti.png')
@@ -50,18 +54,20 @@ def main():
     tree_width = tree[2]
     tree_height = tree[3]
     tree_x = MAX_WIDTH
-    tree_y = 350
+    tree_y = 270
 
     # crystal
     imgCrystal = pygame.image.load('images/crystal.png')
     crystal_x = MAX_WIDTH
-    crystal_y = 350
+    crystal_y = 270
 
     # velocidade inicial
     velocidade = 12
 
     while True:
         screen.fill((255, 255, 255))
+        screen.blit(imgBg, (0, 0))
+
 
         # event check
         for event in pygame.event.get():
