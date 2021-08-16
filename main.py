@@ -1,6 +1,5 @@
 import random
 import sys
-
 import pygame
 
 # Iniciar Pygame
@@ -9,7 +8,7 @@ pygame.display.set_caption('images/Calegaur.io')
 icon = pygame.image.load('images/logodinosaur.png')
 pygame.display.set_icon(icon)
 MAX_WIDTH = 800
-MAX_HEIGHT = 400
+MAX_HEIGHT = 450
 
 
 
@@ -31,20 +30,24 @@ def main():
     # dinosaur
     imgDino1 = pygame.image.load('images/dinosaur1.png')
     imgDino2 = pygame.image.load('images/dinosaur2.png')
-    dino_width, dino_height = imgDino1.get_size()
-    dino_bottom = 205
+    dino = imgDino1.get_rect()
+    dino_height = dino[3]
+    dino_width = dino[2]
+    dino_bottom = 305
     dino_x = 75
     dino_y = dino_bottom
-    jump_top = 50
+    jump_top = 150
     leg_swap = True
     is_bottom = True
     is_go_up = False
 
     # tree
-    imgTree = pygame.image.load('images/cacti.png')
-    tree_width, tree_height = imgTree.get_size()
+    imgTree = pygame.image.load('images/tree.png')
+    tree = imgTree.get_rect()
+    tree_width = tree[2]
+    tree_height = tree[3]
     tree_x = MAX_WIDTH
-    tree_y = 205
+    tree_y = 325
 
     while True:
         screen.fill((255, 255, 255))
@@ -79,14 +82,24 @@ def main():
         if tree_x <= 0:
             tree_x = MAX_WIDTH + random.randint(0, 300)
 
-        # draw tree
-        #screen.blit(imgTree, (tree_x, tree_y))
-        obstaculo = pygame.draw.rect(screen, (0, 0, 0), (tree_x, tree_y, 40, tree_height))
+         # draw tree
+        screen.blit(imgTree, (tree_x, tree_y))
+        tree_side = tree_x+tree_width
+        tree_bott = tree_y+tree_height
 
         # draw dinosaur
-        dino = pygame.draw.rect(screen, (0, 0, 0), (dino_x, dino_y, dino_width, dino_height))
+        if leg_swap:
+            screen.blit(imgDino1, (dino_x, dino_y))
+            leg_swap = False
+        else:
+            screen.blit(imgDino2, (dino_x, dino_y))
+            leg_swap = True
+        dino_side = dino_x+dino_width
+        dino_bott = dino_y+dino_height
 
-        if dino.colliderect(obstaculo):
+        if  tree_side >= dino_x and dino_side >= tree_x and dino_bott >= tree_y:
+            print(dino_bott)
+            print(tree_y)
             vidas -= 1
             print('-1 vida')
             tree_x = MAX_WIDTH + random.randint(0, 300)
@@ -94,13 +107,7 @@ def main():
             print('Perdeu')
             pygame.quit()
             exit()
-        '''if leg_swap:
-            screen.blit(imgDino1, (dino_x, dino_y))
-            leg_swap = False
-        else:
-            screen.blit(imgDino2, (dino_x, dino_y))
-            leg_swap = True'''
-
+       
         # update
         mensagem = f'Vidas: {vidas}'
         placar_vidas = fonte.render(mensagem, False, (0, 0, 0))
