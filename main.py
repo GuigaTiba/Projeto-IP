@@ -40,9 +40,11 @@ def main():
 
     #pterodatyl
     imgPtero = pygame.image.load('images/pterodatyl.png')
-    pterodatyl_height = imgPtero.get_size()[1]
-    pterodatyl_x = 30000
-    pterodatyl_y = (MAX_HEIGHT - pterodatyl_height) - 160
+    ptero = imgPtero.get_rect()
+    ptero_height = ptero[3]
+    ptero_width = ptero[2]
+    ptero_x = MAX_WIDTH + 5000
+    ptero_y = (MAX_HEIGHT - ptero_height) - 160
 
     # tree
     imgTree = pygame.image.load('images/cacti.png')
@@ -51,6 +53,8 @@ def main():
     tree_height = tree[3]
     tree_x = MAX_WIDTH
     tree_y = 350
+
+    velocidade = 12
 
     while True:
         screen.fill((255, 255, 255))
@@ -81,19 +85,22 @@ def main():
             dino_y = dino_bottom
 
         # movimento do cacto e pterodatyl
-        tree_x -= 12
-        pterodatyl_x -= 12
-        if tree_x <= 0 or pterodatyl_x <=0:
+        tree_x -= velocidade
+        ptero_x -= velocidade
+        if tree_x <= 0 or ptero_x <=0:
             tipo_obstaculo = random.randint(0,1)
             if tipo_obstaculo == 0:
                 tree_x = MAX_WIDTH + random.randint(0, 200)
-                pterodatyl_x = 30000
+                ptero_x = 5000
             else:
-                pterodatyl_x = MAX_WIDTH + random.randint(0,200)
-                tree_x = 30000
-
+                ptero_x = MAX_WIDTH + random.randint(0,200)
+                tree_x = 5000
+        velocidade += 0.002
+       
         # draw pterodatyl
-        screen.blit(imgPtero, (pterodatyl_x, pterodatyl_y))
+        screen.blit(imgPtero, (ptero_x, ptero_y))
+        ptero_side = ptero_x+ptero_width
+        ptero_bott = ptero_y+ptero_height
 
         # draw tree
         screen.blit(imgTree, (tree_x, tree_y))
@@ -110,16 +117,21 @@ def main():
         dino_side = dino_x+dino_width
         dino_bott = dino_y+dino_height
 
-        if  tree_side >= dino_x+15 and dino_side >= tree_x+15 and dino_bott >= tree_y:
-            print(dino_bott)
-            print(tree_y)
+
+        # colission
+        if  tree_side >= dino_x and dino_side >= tree_x+40 and dino_bott >= tree_y:
             vidas -= 1
-            print('-1 vida')
             tree_x = MAX_WIDTH + random.randint(0, 300)
+
+        if ptero_side >= dino_x and dino_side >= ptero_x+40 and dino_y <= ptero_y:
+            vidas -= 1
+            ptero_x = MAX_WIDTH + random.randint(0, 300)
+
         if vidas ==0:
             print('Perdeu')
             pygame.quit()
             exit()
+
        
         # update
         mensagem = f'Vidas: {vidas}'
