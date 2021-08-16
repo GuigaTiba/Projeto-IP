@@ -97,7 +97,7 @@ def main():
         dino_side = dino_x+dino_width
         dino_bott = dino_y+dino_height
 
-        if  tree_side >= dino_x and dino_side >= tree_x and dino_bott >= tree_y:
+        if  tree_side >= dino_x+5 and dino_side >= tree_x+5 and dino_bott >= tree_y:
             print(dino_bott)
             print(tree_y)
             vidas -= 1
