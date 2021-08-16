@@ -10,7 +10,6 @@ pygame.display.set_icon(icon)
 MAX_WIDTH = 800
 MAX_HEIGHT = 400
 
-
 def main():
     # Screen, FPS
     screen = pygame.display.set_mode((MAX_WIDTH, MAX_HEIGHT))
@@ -91,7 +90,9 @@ def main():
         else:
             screen.blit(imgDino2, (dino_x, dino_y))
             leg_swap = True
-
+        
+        
+        
         # update
         pygame.display.update()
         fps.tick(30)
