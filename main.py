@@ -2,6 +2,8 @@ import pygame
 import sys
 import random
 
+from pygame.constants import K_DOWN
+
 # Iniciar Pygame
 pygame.init()
 pygame.display.set_caption('images/Calegaur.io')
@@ -69,6 +71,15 @@ def main():
                     if is_bottom:
                         is_go_up = True
                         is_bottom = False
+                if event.key == pygame.K_DOWN:
+                    if is_bottom == False:
+                        dino_y += 5
+                        is_go_up = False
+        
+        # pressed
+        if pygame.key.get_pressed()[K_DOWN]:
+            if is_bottom == False:
+                dino_y += 5
 
         # dinosaur movement
         if is_go_up:
@@ -95,7 +106,11 @@ def main():
             else:
                 ptero_x = MAX_WIDTH + random.randint(0,200)
                 tree_x = 5000
-        velocidade += 0.002
+        
+        if velocidade<= 22:
+            velocidade += 0.008
+        else:
+            velocidade += 0
        
         # draw pterodatyl
         screen.blit(imgPtero, (ptero_x, ptero_y))
