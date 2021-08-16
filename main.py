@@ -36,7 +36,7 @@ def main():
     is_bottom = True
     is_go_up = False
 
-    #pterodatyl
+    # pterodatyl
     imgPtero = pygame.image.load('images/pterodatyl.png')
     ptero = imgPtero.get_rect()
     ptero_height = ptero[3]
@@ -51,6 +51,11 @@ def main():
     tree_height = tree[3]
     tree_x = MAX_WIDTH
     tree_y = 350
+
+    # crystal
+    imgCrystal = pygame.image.load('images/crystal.png')
+    crystal_x = MAX_WIDTH
+    crystal_y = 350
 
     velocidade = 12
 
@@ -94,6 +99,7 @@ def main():
         # movimento do cacto e pterodatyl
         tree_x -= velocidade
         ptero_x -= velocidade
+        crystal_x -= velocidade
         if tree_x <= 0 or ptero_x <=0:
             tipo_obstaculo = randint(0,1)
             if tipo_obstaculo == 0:
@@ -105,7 +111,7 @@ def main():
         
         if velocidade <= 30:
             velocidade += 0.01
-       
+
         # draw pterodatyl
         screen.blit(imgPtero, (ptero_x, ptero_y))
         ptero_side = ptero_x+ptero_width
@@ -126,6 +132,8 @@ def main():
         dino_side = dino_x+dino_width
         dino_bott = dino_y+dino_height
 
+        # draw crystal
+        screen.blit(imgCrystal, (crystal_x, crystal_y))
 
         # colission
         if  tree_side >= dino_x and dino_side >= tree_x+40 and dino_bott >= tree_y:
