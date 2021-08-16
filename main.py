@@ -1,7 +1,7 @@
 import pygame
 import sys
-import random
-
+from random import randint
+from math import ceil
 from pygame.constants import K_DOWN
 
 # Iniciar Pygame
@@ -19,12 +19,8 @@ def main():
 
     # Placar de vidas
     vidas = 3
-    moedas = 0
+    pontuacao = 0
     fonte = pygame.font.SysFont('arial', 25, False, False)
-
-    # Placar de moedas
-    mensagem2 = f'Moedas: {moedas}'
-    placar_moedas = fonte.render(mensagem2, False, (0, 0, 0))
 
     # dinosaur
     imgDino1 = pygame.image.load('images/dinosaur1.png')
@@ -99,18 +95,16 @@ def main():
         tree_x -= velocidade
         ptero_x -= velocidade
         if tree_x <= 0 or ptero_x <=0:
-            tipo_obstaculo = random.randint(0,1)
+            tipo_obstaculo = randint(0,1)
             if tipo_obstaculo == 0:
-                tree_x = MAX_WIDTH + random.randint(0, 200)
+                tree_x = MAX_WIDTH + randint(0, 200)
                 ptero_x = 5000
             else:
-                ptero_x = MAX_WIDTH + random.randint(0,200)
+                ptero_x = MAX_WIDTH + randint(0,200)
                 tree_x = 5000
         
-        if velocidade<= 22:
-            velocidade += 0.008
-        else:
-            velocidade += 0
+        if velocidade <= 30:
+            velocidade += 0.01
        
         # draw pterodatyl
         screen.blit(imgPtero, (ptero_x, ptero_y))
@@ -136,23 +130,27 @@ def main():
         # colission
         if  tree_side >= dino_x and dino_side >= tree_x+40 and dino_bott >= tree_y:
             vidas -= 1
-            tree_x = MAX_WIDTH + random.randint(0, 300)
+            tree_x = MAX_WIDTH + randint(0, 300)
 
         if ptero_side >= dino_x and dino_side >= ptero_x+40 and dino_y <= ptero_y:
             vidas -= 1
-            ptero_x = MAX_WIDTH + random.randint(0, 300)
+            ptero_x = MAX_WIDTH + randint(0, 300)
 
         if vidas ==0:
             print('Perdeu')
             pygame.quit()
             exit()
 
-       
+       # Placar
+        mensagem2 = f'Pontuação: {pontuacao:07d}'
+        placar_pontuacao = fonte.render(mensagem2, False, (0, 0, 0))
+        pontuacao += ceil(velocidade/20)
+
         # update
         mensagem = f'Vidas: {vidas}'
         placar_vidas = fonte.render(mensagem, False, (0, 0, 0))
         screen.blit(placar_vidas, (20, 20))
-        screen.blit(placar_moedas, (680, 20))
+        screen.blit(placar_pontuacao, (530, 20))
         
         
         
