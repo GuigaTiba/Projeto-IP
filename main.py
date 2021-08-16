@@ -8,21 +8,32 @@ pygame.display.set_caption('images/Calegaur.io')
 icon = pygame.image.load('images/logodinosaur.png')
 pygame.display.set_icon(icon)
 MAX_WIDTH = 800
-MAX_HEIGHT = 400
+MAX_HEIGHT = 450
 
 def main():
     # Screen, FPS
     screen = pygame.display.set_mode((MAX_WIDTH, MAX_HEIGHT))
     fps = pygame.time.Clock()
 
+    # Placar de vidas
+    vidas = 3
+    moedas = 0
+    fonte = pygame.font.SysFont('arial', 25, False, False)
+
+    # Placar de moedas
+    mensagem2 = f'Moedas: {moedas}'
+    placar_moedas = fonte.render(mensagem2, False, (0, 0, 0))
+
     # dinosaur
     imgDino1 = pygame.image.load('images/dinosaur1.png')
     imgDino2 = pygame.image.load('images/dinosaur2.png')
-    dino_height = imgDino1.get_size()[1]
-    dino_bottom = MAX_HEIGHT - dino_height
+    dino = imgDino1.get_rect()
+    dino_height = dino[3]
+    dino_width = dino[2]
+    dino_bottom = 305
     dino_x = 75
     dino_y = dino_bottom
-    jump_top = 180
+    jump_top = 150
     leg_swap = True
     is_bottom = True
     is_go_up = False
@@ -31,13 +42,15 @@ def main():
     imgPtero = pygame.image.load('images/pterodatyl.png')
     pterodatyl_height = imgPtero.get_size()[1]
     pterodatyl_x = MAX_WIDTH
-    pterodatyl_y = (MAX_HEIGHT - pterodatyl_height) - 100
+    pterodatyl_y = (MAX_HEIGHT - pterodatyl_height) - 250
 
     # tree
     imgTree = pygame.image.load('images/cacti.png')
-    tree_height = imgTree.get_size()[1]
+    tree = imgTree.get_rect()
+    tree_width = tree[2]
+    tree_height = tree[3]
     tree_x = MAX_WIDTH
-    tree_y = MAX_HEIGHT - tree_height
+    tree_y = 325
 
     while True:
         screen.fill((255, 255, 255))
@@ -82,6 +95,8 @@ def main():
 
         # draw tree
         screen.blit(imgTree, (tree_x, tree_y))
+        tree_side = tree_x+tree_width
+        tree_bott = tree_y+tree_height
 
         # draw dinosaur
         if leg_swap:
@@ -90,6 +105,25 @@ def main():
         else:
             screen.blit(imgDino2, (dino_x, dino_y))
             leg_swap = True
+        dino_side = dino_x+dino_width
+        dino_bott = dino_y+dino_height
+
+        if  tree_side >= dino_x+15 and dino_side >= tree_x+15 and dino_bott >= tree_y:
+            print(dino_bott)
+            print(tree_y)
+            vidas -= 1
+            print('-1 vida')
+            tree_x = MAX_WIDTH + random.randint(0, 300)
+        if vidas ==0:
+            print('Perdeu')
+            pygame.quit()
+            exit()
+       
+        # update
+        mensagem = f'Vidas: {vidas}'
+        placar_vidas = fonte.render(mensagem, False, (0, 0, 0))
+        screen.blit(placar_vidas, (20, 20))
+        screen.blit(placar_moedas, (680, 20))
         
         
         
