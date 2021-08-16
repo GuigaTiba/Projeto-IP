@@ -30,7 +30,7 @@ def main():
     dino = imgDino1.get_rect()
     dino_height = dino[3]
     dino_width = dino[2]
-    dino_bottom = 305
+    dino_bottom = 320
     dino_x = 75
     dino_y = dino_bottom
     jump_top = 150
@@ -42,7 +42,7 @@ def main():
     imgPtero = pygame.image.load('images/pterodatyl.png')
     pterodatyl_height = imgPtero.get_size()[1]
     pterodatyl_x = MAX_WIDTH
-    pterodatyl_y = (MAX_HEIGHT - pterodatyl_height) - 250
+    pterodatyl_y = (MAX_HEIGHT - pterodatyl_height) - 160
 
     # tree
     imgTree = pygame.image.load('images/cacti.png')
@@ -50,7 +50,7 @@ def main():
     tree_width = tree[2]
     tree_height = tree[3]
     tree_x = MAX_WIDTH
-    tree_y = 325
+    tree_y = 350
 
     while True:
         screen.fill((255, 255, 255))
