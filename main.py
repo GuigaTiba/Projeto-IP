@@ -12,6 +12,12 @@ pygame.display.set_icon(icon)
 MAX_WIDTH = 800
 MAX_HEIGHT = 450
 
+musica_de_fundo = pygame.mixer.music.load('sons/musica_fundo_dino.mp3')
+pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.35)
+
+pulo_barulho = pygame.mixer.Sound('sons/pulo_dino.wav')
+
 def main():
     # Screen, FPS
     screen = pygame.display.set_mode((MAX_WIDTH, MAX_HEIGHT))
@@ -52,12 +58,13 @@ def main():
     imgTree = pygame.image.load('images/cacti.png')
     tree = imgTree.get_rect()
     tree_width = tree[2]
-    tree_height = tree[3]
     tree_x = MAX_WIDTH
     tree_y = 270
 
     # crystal
     imgCrystal = pygame.image.load('images/crystal.png')
+    crystal = imgCrystal.get_rect()
+    crystal_width = crystal[2]
     crystal_x = MAX_WIDTH
     crystal_y = 270
 
@@ -128,7 +135,6 @@ def main():
         # draw tree
         screen.blit(imgTree, (tree_x, tree_y))
         tree_side = tree_x+tree_width
-        tree_bott = tree_y+tree_height
 
         # draw dinosaur
         if leg_swap:
@@ -142,6 +148,7 @@ def main():
 
         # draw crystal
         screen.blit(imgCrystal, (crystal_x, crystal_y))
+        crystal_side = crystal_width+crystal_x
 
         # colission
         if  tree_side >= dino_x and dino_side >= tree_x+40 and dino_bott >= tree_y:
@@ -151,8 +158,12 @@ def main():
         if ptero_side >= dino_x and dino_side >= ptero_x+40 and dino_y <= ptero_y:
             vidas -= 1
             ptero_x = MAX_WIDTH + randint(0, 300)
+        
+        if crystal_side >= dino_x and dino_side >= crystal_x and dino_bott >= crystal_y:
+            pygame.quit()
+            exit()
 
-        if vidas ==0:
+        if vidas == 0:
             print('Perdeu')
             pygame.quit()
             exit()
