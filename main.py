@@ -57,6 +57,7 @@ def main():
     crystal_x = MAX_WIDTH
     crystal_y = 350
 
+    # velocidade inicial
     velocidade = 12
 
     while True:
@@ -109,6 +110,7 @@ def main():
                 ptero_x = MAX_WIDTH + randint(0,200)
                 tree_x = 5000
         
+        # velocidade mod
         if velocidade <= 30:
             velocidade += 0.01
 
