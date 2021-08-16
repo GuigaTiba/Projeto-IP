@@ -1,5 +1,4 @@
-# Projeto-IP
-Calegauro.io
+# Calegauro.io
 
 Participantes:
 
