@@ -16,8 +16,6 @@ musica_de_fundo = pygame.mixer.music.load('sons/musica_fundo_dino.mp3')
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.35)
 
-pulo_barulho = pygame.mixer.Sound('sons/pulo_dino.wav')
-
 def main():
     # Screen, FPS
     screen = pygame.display.set_mode((MAX_WIDTH, MAX_HEIGHT))
