@@ -3,6 +3,7 @@ import sys
 from random import randint
 from math import ceil
 from pygame.constants import K_DOWN
+from obstaculo import obstaculo_type
 
 # Iniciar Pygame
 pygame.init()
@@ -63,8 +64,9 @@ def main():
     imgCrystal = pygame.image.load('images/crystal.png')
     crystal = imgCrystal.get_rect()
     crystal_width = crystal[2]
-    crystal_x = MAX_WIDTH
+    crystal_x = MAX_WIDTH + 5000
     crystal_y = 270
+    crystal_flag = 0
 
     # velocidade inicial
     velocidade = 12
@@ -112,14 +114,16 @@ def main():
         tree_x -= velocidade
         ptero_x -= velocidade
         crystal_x -= velocidade
-        if tree_x <= 0 or ptero_x <=0:
-            tipo_obstaculo = randint(0,1)
-            if tipo_obstaculo == 0:
-                tree_x = MAX_WIDTH + randint(0, 200)
-                ptero_x = 5000
-            else:
-                ptero_x = MAX_WIDTH + randint(0,200)
-                tree_x = 5000
+        if tree_x <= 0 or ptero_x <=0 or crystal_x <= 0:
+            obstaculo_geral = obstaculo_type(tree_x, ptero_x, crystal_x, MAX_WIDTH, pontuacao, crystal_flag)
+            tree_x = obstaculo_geral[0]
+            ptero_x = obstaculo_geral[1]
+            crystal_x = obstaculo_geral[2]
+            try:
+                crystal_flag = obstaculo_geral[3]
+            except IndexError:
+                True
+
         
         # velocidade mod
         if velocidade <= 30:
