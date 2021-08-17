@@ -3,6 +3,7 @@ import sys
 from random import randint
 from math import ceil
 from pygame.constants import K_DOWN
+from obstaculo import obstaculo_type
 
 # Iniciar Pygame
 pygame.init()
@@ -11,6 +12,10 @@ icon = pygame.image.load('images/logodinosaur.png')
 pygame.display.set_icon(icon)
 MAX_WIDTH = 800
 MAX_HEIGHT = 450
+
+musica_de_fundo = pygame.mixer.music.load('sons/musica_fundo_dino.mp3')
+pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.35)
 
 def main():
     # Screen, FPS
@@ -52,14 +57,16 @@ def main():
     imgTree = pygame.image.load('images/cacti.png')
     tree = imgTree.get_rect()
     tree_width = tree[2]
-    tree_height = tree[3]
     tree_x = MAX_WIDTH
     tree_y = 270
 
     # crystal
     imgCrystal = pygame.image.load('images/crystal.png')
-    crystal_x = MAX_WIDTH
+    crystal = imgCrystal.get_rect()
+    crystal_width = crystal[2]
+    crystal_x = MAX_WIDTH + 5000
     crystal_y = 270
+    crystal_flag = 0
 
     # velocidade inicial
     velocidade = 12
@@ -107,14 +114,16 @@ def main():
         tree_x -= velocidade
         ptero_x -= velocidade
         crystal_x -= velocidade
-        if tree_x <= 0 or ptero_x <=0:
-            tipo_obstaculo = randint(0,1)
-            if tipo_obstaculo == 0:
-                tree_x = MAX_WIDTH + randint(0, 200)
-                ptero_x = 5000
-            else:
-                ptero_x = MAX_WIDTH + randint(0,200)
-                tree_x = 5000
+        if tree_x <= 0 or ptero_x <=0 or crystal_x <= 0:
+            obstaculo_geral = obstaculo_type(tree_x, ptero_x, crystal_x, MAX_WIDTH, pontuacao, crystal_flag)
+            tree_x = obstaculo_geral[0]
+            ptero_x = obstaculo_geral[1]
+            crystal_x = obstaculo_geral[2]
+            try:
+                crystal_flag = obstaculo_geral[3]
+            except IndexError:
+                True
+
         
         # velocidade
         if velocidade <= 30:
@@ -128,7 +137,6 @@ def main():
         # draw tree
         screen.blit(imgTree, (tree_x, tree_y))
         tree_side = tree_x+tree_width
-        tree_bott = tree_y+tree_height
 
         # draw dinosaur
         if leg_swap:
@@ -142,6 +150,7 @@ def main():
 
         # draw crystal
         screen.blit(imgCrystal, (crystal_x, crystal_y))
+        crystal_side = crystal_width+crystal_x
 
         # colission
         if  tree_side >= dino_x and dino_side >= tree_x+40 and dino_bott >= tree_y:
@@ -151,8 +160,12 @@ def main():
         if ptero_side >= dino_x and dino_side >= ptero_x+40 and dino_y <= ptero_y:
             vidas -= 1
             ptero_x = MAX_WIDTH + randint(0, 300)
+        
+        if crystal_side >= dino_x and dino_side >= crystal_x and dino_bott >= crystal_y:
+            pygame.quit()
+            exit()
 
-        if vidas ==0:
+        if vidas == 0:
             print('Perdeu')
             pygame.quit()
             exit()
