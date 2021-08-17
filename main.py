@@ -109,12 +109,19 @@ def main():
         if not is_bottom and dino_y >= dino_bottom:
             is_bottom = True
             dino_y = dino_bottom
+        
+        # colissao 3d
+        tree_side = tree_x+tree_width
+        ptero_bott = ptero_y+ptero_height
+        ptero_side = ptero_x+ptero_width
+        crystal_side = crystal_width+crystal_x
+
 
         # movimento do cacto e pterodatyl
         tree_x -= velocidade
         ptero_x -= velocidade
-        crystal_x -= velocidade
-        if tree_x <= 0 or ptero_x <=0 or crystal_x <= 0:
+        crystal_x -= 14
+        if tree_x <= 0 - tree_side or ptero_x <= 0 - ptero_side or crystal_x <= 0 - crystal_side:
             obstaculo_geral = obstaculo_type(tree_x, ptero_x, crystal_x, MAX_WIDTH, pontuacao, crystal_flag)
             tree_x = obstaculo_geral[0]
             ptero_x = obstaculo_geral[1]
