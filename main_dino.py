@@ -158,7 +158,7 @@ def main():
             velocidade = 0
         tree_x -= velocidade
         ptero_x -= velocidade
-        crystal_x -= velocidade
+        crystal_x -= 13.5
         coracao_x -= velocidade
         moeda_x -= velocidade
 
