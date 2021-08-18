@@ -228,8 +228,11 @@ def main():
         cutscene = colisao.col_crystal(crystal_side, dino_x, dino_side, crystal_x, dino_bott, crystal_y, cutscene)
         vidas, pontuacao, coracao_x = colisao.col_coracao(coracao_side, dino_x, dino_side, coracao_x, dino_y, coracao_bott, dino_bott, coracao_y, vidas, pontuacao)
         pontuacao, moeda_x = colisao.col_moeda(moeda_side, dino_x, dino_side, moeda_x, dino_y, moeda_bott, dino_bott, moeda_y, pontuacao)
+        if cutscene == 1:
+            pygame.quit()
+            exit()
 
-       # Placar
+        # Placar
         mensagem2 = f'Pontuação: {pontuacao:07d}'
         placar_pontuacao = fonte.render(mensagem2, False, (0, 0, 0))
         pontuacao += ceil(velocidade/20)
