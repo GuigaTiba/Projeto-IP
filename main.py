@@ -164,7 +164,7 @@ def main():
         if leg_swap and player_alive:
             screen.blit(imgDino1, (dino_x, dino_y))
             leg_swap = False
-        if leg_swap == False and player_alive:
+        elif leg_swap == False and player_alive:
             screen.blit(imgDino2, (dino_x, dino_y))
             leg_swap = True
         dino_side = dino_x+dino_width
