@@ -2,7 +2,7 @@ import pygame
 import sys
 from random import randint
 from math import ceil
-from pygame.constants import K_DOWN
+from pygame.constants import KEYDOWN, K_DOWN
 from obstaculo import obstaculo_type
 
 # Iniciar Pygame
@@ -26,6 +26,7 @@ def main():
     vidas = 3
     pontuacao = 0
     fonte = pygame.font.SysFont('arial', 25, False, False)
+    player_alive = 1
 
     # dinosaur
     imgDino1 = pygame.image.load('images/dinosaur1.png')
@@ -40,6 +41,13 @@ def main():
     leg_swap = True
     is_bottom = True
     is_go_up = False
+
+    # dinossauro morto
+    imgDino3 = pygame.image.load('images/dinosauromorto.png')
+
+    # Game-over e pressanykey
+    imgGameover = pygame.image.load('images/gameover.png')
+    imgPressanykey = pygame.image.load('images/pressanykey.png')
 
     # Background
     imgBg = pygame.image.load('images/dia3.png')
@@ -70,7 +78,7 @@ def main():
 
     # velocidade inicial
     velocidade = 12
-
+    
     while True:
         screen.fill((255, 255, 255))
         screen.blit(imgBg, (0, 0))
@@ -78,19 +86,31 @@ def main():
 
         # event check
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT and player_alive:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN and player_alive:
                 if event.key == pygame.K_UP or event.key == pygame.K_SPACE:
                     if is_bottom:
                         is_go_up = True
                         is_bottom = False
-                if event.key == pygame.K_DOWN:
+                elif event.key == pygame.K_DOWN:
                     if is_bottom == False:
                         dino_y += 5
                         is_go_up = False
-        
+            if not player_alive:
+                if event.type == KEYDOWN:
+                    main()
+                elif event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+        # vidas check/ dino morto display
+        if vidas == 0:   
+            screen.blit(imgDino3, (dino_x, dino_y))
+            screen.blit(imgGameover, (200, 100))
+            screen.blit(imgPressanykey, (250, 250))
+            player_alive = False
         # pressed
         if pygame.key.get_pressed()[K_DOWN]:
             if is_bottom == False:
@@ -109,19 +129,14 @@ def main():
         if not is_bottom and dino_y >= dino_bottom:
             is_bottom = True
             dino_y = dino_bottom
-        
-        # colissao 3d
-        tree_side = tree_x+tree_width
-        ptero_bott = ptero_y+ptero_height
-        ptero_side = ptero_x+ptero_width
-        crystal_side = crystal_width+crystal_x
-
 
         # movimento do cacto e pterodatyl
+        if not player_alive:
+            velocidade = 0
         tree_x -= velocidade
         ptero_x -= velocidade
-        crystal_x -= 14
-        if tree_x <= 0 - tree_side or ptero_x <= 0 - ptero_side or crystal_x <= 0 - crystal_side:
+        crystal_x -= velocidade
+        if tree_x <= 0 or ptero_x <=0 or crystal_x <= 0:
             obstaculo_geral = obstaculo_type(tree_x, ptero_x, crystal_x, MAX_WIDTH, pontuacao, crystal_flag)
             tree_x = obstaculo_geral[0]
             ptero_x = obstaculo_geral[1]
@@ -133,7 +148,7 @@ def main():
 
         
         # velocidade
-        if velocidade <= 30:
+        if velocidade <= 30 and player_alive:
             velocidade += 0.01
 
         # draw pterodatyl
@@ -146,10 +161,10 @@ def main():
         tree_side = tree_x+tree_width
 
         # draw dinosaur
-        if leg_swap:
+        if leg_swap and player_alive:
             screen.blit(imgDino1, (dino_x, dino_y))
             leg_swap = False
-        else:
+        if leg_swap == False and player_alive:
             screen.blit(imgDino2, (dino_x, dino_y))
             leg_swap = True
         dino_side = dino_x+dino_width
@@ -159,7 +174,7 @@ def main():
         screen.blit(imgCrystal, (crystal_x, crystal_y))
         crystal_side = crystal_width+crystal_x
 
-        # colission
+        # collision
         if  tree_side >= dino_x and dino_side >= tree_x+40 and dino_bott >= tree_y:
             vidas -= 1
             tree_x = MAX_WIDTH + randint(0, 300)
@@ -169,11 +184,6 @@ def main():
             ptero_x = MAX_WIDTH + randint(0, 300)
         
         if crystal_side >= dino_x and dino_side >= crystal_x and dino_bott >= crystal_y:
-            pygame.quit()
-            exit()
-
-        if vidas == 0:
-            print('Perdeu')
             pygame.quit()
             exit()
 
@@ -187,8 +197,6 @@ def main():
         placar_vidas = fonte.render(mensagem, False, (0, 0, 0))
         screen.blit(placar_vidas, (20, 20))
         screen.blit(placar_pontuacao, (530, 20))
-        
-        
         
         # update
         pygame.display.update()
