@@ -38,7 +38,7 @@ def main():
     dino_x = 75
     dino_y = dino_bottom
     jump_top = 70
-    leg_swap = True
+    leg_swap = 0
     is_bottom = True
     is_go_up = False
 
@@ -54,12 +54,14 @@ def main():
     
 
     # pterodatyl
-    imgPtero = pygame.image.load('images/pterodatyl.png')
-    ptero = imgPtero.get_rect()
+    imgPtero1 = pygame.image.load('images/pterodatyl.png')
+    imgPtero2 = pygame.image.load('images/pterodatyl0.png')
+    ptero = imgPtero1.get_rect()
     ptero_height = ptero[3]
     ptero_width = ptero[2]
     ptero_x = MAX_WIDTH + 5000
     ptero_y = (MAX_HEIGHT - ptero_height) - 230
+    wing_swap = 0
 
     # tree
     imgTree = pygame.image.load('images/cacti.png')
@@ -149,10 +151,16 @@ def main():
         
         # velocidade
         if velocidade <= 30 and player_alive:
-            velocidade += 0.01
+            velocidade += 0.02
 
         # draw pterodatyl
-        screen.blit(imgPtero, (ptero_x, ptero_y))
+        if wing_swap <= 12:
+            screen.blit(imgPtero1, (ptero_x, ptero_y))
+        elif wing_swap <= 25:
+            screen.blit(imgPtero2, (ptero_x, ptero_y))
+            if wing_swap == 25:
+                wing_swap = 0
+        wing_swap += 1
         ptero_side = ptero_x+ptero_width
         ptero_bott = ptero_y+ptero_height
 
@@ -161,12 +169,13 @@ def main():
         tree_side = tree_x+tree_width
 
         # draw dinosaur
-        if leg_swap and player_alive:
+        if leg_swap <= 8 and player_alive:
             screen.blit(imgDino1, (dino_x, dino_y))
-            leg_swap = False
-        elif leg_swap == False and player_alive:
+        elif leg_swap <= 17 and player_alive:
             screen.blit(imgDino2, (dino_x, dino_y))
-            leg_swap = True
+            if leg_swap == 17:
+                leg_swap = 0
+        leg_swap += 1
         dino_side = dino_x+dino_width
         dino_bott = dino_y+dino_height
 
