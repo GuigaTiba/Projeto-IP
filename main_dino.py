@@ -3,8 +3,9 @@ import sys
 from random import randint
 from math import ceil
 from pygame.constants import KEYDOWN, K_DOWN
-from obstaculo import obstaculo_type
+from obstaculo_dino import obstaculo_type
 from moeda_ou_coração import choices
+from colisão_dino import colisao
 
 # Iniciar Pygame
 pygame.init()
@@ -79,6 +80,7 @@ def main():
     crystal_x = MAX_WIDTH + 5000
     crystal_y = 270
     crystal_flag = 0
+    cutscene = 0
      
     #heart
     imgCoracao = pygame.image.load('images_dino/coracao.png')
@@ -221,29 +223,11 @@ def main():
         moeda_bott = moeda_y+moeda_height
 
         # collision
-        if  tree_side >= dino_x and dino_side >= tree_x+40 and dino_bott >= tree_y:
-            vidas -= 1
-            tree_x = -1
-
-        if ptero_side >= dino_x and dino_side >= ptero_x+40 and dino_y <= ptero_bott:
-            vidas -= 1
-            ptero_x = -1
-        
-        if crystal_side >= dino_x and dino_side >= crystal_x and dino_bott >= crystal_y:
-            pygame.quit()
-            exit()
-
-        if coracao_side >= dino_x and dino_side >= coracao_x and dino_y <= coracao_bott and dino_bott >= coracao_y:
-            if 0 < vidas < 3:
-                vidas += 1
-                coracao_x = -1
-            else:
-                pontuacao += 150
-                coracao_x = -1
-        
-        if moeda_side >= dino_x and dino_side >= moeda_x and dino_y <= moeda_bott and dino_bott >= moeda_y:
-            pontuacao += 150
-            moeda_x = -1
+        vidas, tree_x = colisao.col_tree(tree_side, dino_x, dino_side, tree_x, dino_bott, tree_y, vidas)
+        vidas, ptero_x = colisao.col_ptero(ptero_side, dino_x, dino_side, ptero_x, dino_y, ptero_bott, vidas)
+        cutscene = colisao.col_crystal(crystal_side, dino_x, dino_side, crystal_x, dino_bott, crystal_y, cutscene)
+        vidas, pontuacao, coracao_x = colisao.col_coracao(coracao_side, dino_x, dino_side, coracao_x, dino_y, coracao_bott, dino_bott, coracao_y, vidas, pontuacao)
+        pontuacao, moeda_x = colisao.col_moeda(moeda_side, dino_x, dino_side, moeda_x, dino_y, moeda_bott, dino_bott, moeda_y, pontuacao)
 
        # Placar
         mensagem2 = f'Pontuação: {pontuacao:07d}'
