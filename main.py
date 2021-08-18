@@ -171,7 +171,6 @@ def main():
         if crystal_side >= dino_x and dino_side >= crystal_x and dino_bott >= crystal_y:
             pygame.quit()
             exit()
-
         if vidas == 0:
             print('Perdeu')
             pygame.quit()
