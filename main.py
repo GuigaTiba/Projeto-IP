@@ -4,6 +4,7 @@ from random import randint
 from math import ceil
 from pygame.constants import KEYDOWN, K_DOWN
 from obstaculo import obstaculo_type
+from moeda_ou_coração import choices
 
 # Iniciar Pygame
 pygame.init()
@@ -13,14 +14,15 @@ pygame.display.set_icon(icon)
 MAX_WIDTH = 800
 MAX_HEIGHT = 450
 
-musica_de_fundo = pygame.mixer.music.load('sons_dino/musica_fundo_dino.mp3')
-pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0.35)
-
 def main():
     # Screen, FPS
     screen = pygame.display.set_mode((MAX_WIDTH, MAX_HEIGHT))
     fps = pygame.time.Clock()
+
+    # music
+    pygame.mixer.music.load('sons_dino/musica_fundo_dino.mp3')
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.35)
 
     # Placar de vidas
     vidas = 3
@@ -77,6 +79,23 @@ def main():
     crystal_x = MAX_WIDTH + 5000
     crystal_y = 270
     crystal_flag = 0
+     
+    #heart
+    imgCoracao = pygame.image.load('images_dino/coracao.png')
+    coracao = imgCoracao.get_rect()
+    coracao_width = coracao[2]-1
+    coracao_height = coracao[3]-1
+    coracao_x = MAX_WIDTH + 5000
+    coracao_y = randint(150, 270)
+
+    #moeda
+    imgMoeda = pygame.image.load('images_dino/Moeda.png')
+    moeda = imgMoeda.get_rect()
+    moeda_width = moeda[2]-1
+    moeda_height = moeda[3]-1
+    moeda_x = MAX_WIDTH + randint(600, 2000)
+    moeda_y = randint(150, 270)
+
 
     # velocidade inicial
     velocidade = 12
@@ -138,8 +157,11 @@ def main():
         tree_x -= velocidade
         ptero_x -= velocidade
         crystal_x -= velocidade
-        if tree_x <= 0 or ptero_x <=0 or crystal_x <= 0:
-            obstaculo_geral = obstaculo_type(tree_x, ptero_x, crystal_x, MAX_WIDTH, pontuacao, crystal_flag)
+        coracao_x -= velocidade
+        moeda_x -= velocidade
+
+        if tree_x < 0 or ptero_x < 0 or crystal_x < 0:
+            obstaculo_geral = obstaculo_type(MAX_WIDTH, pontuacao, crystal_flag)
             tree_x = obstaculo_geral[0]
             ptero_x = obstaculo_geral[1]
             crystal_x = obstaculo_geral[2]
@@ -147,6 +169,10 @@ def main():
                 crystal_flag = obstaculo_geral[3]
             except IndexError:
                 True
+        if moeda_x < 0 or coracao_x < 0:
+            moeda_coracao = choices(MAX_WIDTH)
+            moeda_x = moeda_coracao[0]
+            coracao_x = moeda_coracao[1]
 
         
         # velocidade
@@ -182,19 +208,42 @@ def main():
         # draw crystal
         screen.blit(imgCrystal, (crystal_x, crystal_y))
         crystal_side = crystal_width+crystal_x
+        
+        # draw heart
+        screen.blit(imgCoracao, (coracao_x, coracao_y))
+        coracao_side = coracao_width+coracao_x
+        coracao_bott = coracao_height+coracao_y
+
+
+        # draw moeda
+        screen.blit(imgMoeda, (moeda_x, moeda_y))
+        moeda_side = moeda_width+moeda_x
+        moeda_bott = moeda_y+moeda_height
 
         # collision
         if  tree_side >= dino_x and dino_side >= tree_x+40 and dino_bott >= tree_y:
             vidas -= 1
-            tree_x = MAX_WIDTH + randint(0, 300)
+            tree_x = -1
 
-        if ptero_side >= dino_x and dino_side >= ptero_x+40 and dino_y <= ptero_y:
+        if ptero_side >= dino_x and dino_side >= ptero_x+40 and dino_y <= ptero_bott:
             vidas -= 1
-            ptero_x = MAX_WIDTH + randint(0, 300)
+            ptero_x = -1
         
         if crystal_side >= dino_x and dino_side >= crystal_x and dino_bott >= crystal_y:
             pygame.quit()
             exit()
+
+        if coracao_side >= dino_x and dino_side >= coracao_x and dino_y <= coracao_bott and dino_bott >= coracao_y:
+            if 0 < vidas < 3:
+                vidas += 1
+                coracao_x = -1
+            else:
+                pontuacao += 150
+                coracao_x = -1
+        
+        if moeda_side >= dino_x and dino_side >= moeda_x and dino_y <= moeda_bott and dino_bott >= moeda_y:
+            pontuacao += 150
+            moeda_x = -1
 
        # Placar
         mensagem2 = f'Pontuação: {pontuacao:07d}'
