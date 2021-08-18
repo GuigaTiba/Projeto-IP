@@ -7,13 +7,13 @@ from obstaculo import obstaculo_type
 
 # Iniciar Pygame
 pygame.init()
-pygame.display.set_caption('images/Calegaur.io')
-icon = pygame.image.load('images/logodinosaur.png')
+pygame.display.set_caption('images_dino/Calegaur.io')
+icon = pygame.image.load('images_dino/logodinosaur.png')
 pygame.display.set_icon(icon)
 MAX_WIDTH = 800
 MAX_HEIGHT = 450
 
-musica_de_fundo = pygame.mixer.music.load('sons/musica_fundo_dino.mp3')
+musica_de_fundo = pygame.mixer.music.load('sons_dino/musica_fundo_dino.mp3')
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.35)
 
@@ -29,8 +29,8 @@ def main():
     player_alive = 1
 
     # dinosaur
-    imgDino1 = pygame.image.load('images/dinosaur1.png')
-    imgDino2 = pygame.image.load('images/dinosaur2.png')
+    imgDino1 = pygame.image.load('images_dino/dinosaur1.png')
+    imgDino2 = pygame.image.load('images_dino/dinosaur2.png')
     dino = imgDino1.get_rect()
     dino_height = dino[3]
     dino_width = dino[2]
@@ -43,19 +43,19 @@ def main():
     is_go_up = False
 
     # dinossauro morto
-    imgDino3 = pygame.image.load('images/dinosauromorto.png')
+    imgDino3 = pygame.image.load('images_dino/dinosauromorto.png')
 
     # Game-over e pressanykey
-    imgGameover = pygame.image.load('images/gameover.png')
-    imgPressanykey = pygame.image.load('images/pressanykey.png')
+    imgGameover = pygame.image.load('images_dino/gameover.png')
+    imgPressanykey = pygame.image.load('images_dino/pressanykey.png')
 
     # Background
-    imgBg = pygame.image.load('images/dia3.png')
+    imgBg = pygame.image.load('images_dino/dia3.png')
     
 
     # pterodatyl
-    imgPtero1 = pygame.image.load('images/pterodatyl.png')
-    imgPtero2 = pygame.image.load('images/pterodatyl0.png')
+    imgPtero1 = pygame.image.load('images_dino/pterodatyl.png')
+    imgPtero2 = pygame.image.load('images_dino/pterodatyl0.png')
     ptero = imgPtero1.get_rect()
     ptero_height = ptero[3]
     ptero_width = ptero[2]
@@ -64,14 +64,14 @@ def main():
     wing_swap = 0
 
     # tree
-    imgTree = pygame.image.load('images/cacti.png')
+    imgTree = pygame.image.load('images_dino/cacti.png')
     tree = imgTree.get_rect()
     tree_width = tree[2]
     tree_x = MAX_WIDTH
     tree_y = 270
 
     # crystal
-    imgCrystal = pygame.image.load('images/crystal.png')
+    imgCrystal = pygame.image.load('images_dino/crystal.png')
     crystal = imgCrystal.get_rect()
     crystal_width = crystal[2]
     crystal_x = MAX_WIDTH + 5000
