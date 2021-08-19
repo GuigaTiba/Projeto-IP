@@ -85,16 +85,16 @@ def main():
     #heart
     imgCoracao = pygame.image.load('images_dino/coracao.png')
     coracao = imgCoracao.get_rect()
-    coracao_width = coracao[2]-1
-    coracao_height = coracao[3]-1
+    coracao_width = coracao[2]-2
+    coracao_height = coracao[3]-2
     coracao_x = MAX_WIDTH + 5000
     coracao_y = randint(150, 270)
 
     #moeda
     imgMoeda = pygame.image.load('images_dino/Moeda.png')
     moeda = imgMoeda.get_rect()
-    moeda_width = moeda[2]-1
-    moeda_height = moeda[3]-1
+    moeda_width = moeda[2]-2
+    moeda_height = moeda[3]-2
     moeda_x = MAX_WIDTH + randint(600, 2000)
     moeda_y = randint(150, 270)
 
