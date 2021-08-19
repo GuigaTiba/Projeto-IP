@@ -11,5 +11,5 @@ class Movimentação():
         return cactox
     
     def crystal(velocidade, crystalx):
-        crystalx -= velocidade
+        crystalx -= 12
         return crystalx
