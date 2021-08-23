@@ -85,8 +85,8 @@ def main():
     #heart
     imgCoracao = pygame.image.load('images_dino/coracao.png')
     coracao = imgCoracao.get_rect()
-    coracao_width = coracao[2]-2
-    coracao_height = coracao[3]-2
+    coracao_width = coracao[2]-3
+    coracao_height = coracao[3]-3
     coracao_x = MAX_WIDTH + 5000
     coracao_y = randint(150, 270)
     pontuacao_vidas = 0
@@ -94,8 +94,8 @@ def main():
     #moeda
     imgMoeda = pygame.image.load('images_dino/Moeda.png')
     moeda = imgMoeda.get_rect()
-    moeda_width = moeda[2]-2
-    moeda_height = moeda[3]-2
+    moeda_width = moeda[2]-3
+    moeda_height = moeda[3]-3
     moeda_x = MAX_WIDTH + randint(600, 2000)
     moeda_y = randint(150, 270)
     pontuacao_moedas = 0
@@ -164,7 +164,7 @@ def main():
         coracao_x -= velocidade
         moeda_x -= velocidade
 
-        if tree_x < 0 or ptero_x < 0 or crystal_x < 0:
+        if tree_x < -30 or ptero_x < -60 or crystal_x < -30:
             obstaculo_geral = obstaculo_type(MAX_WIDTH, pontuacao, crystal_flag)
             tree_x = obstaculo_geral[0]
             ptero_x = obstaculo_geral[1]
@@ -181,7 +181,7 @@ def main():
         
         # velocidade
         if velocidade <= 30 and player_alive:
-            velocidade += 0.02
+            velocidade += 0.015
 
         # draw pterodatyl
         if wing_swap <= 12:
