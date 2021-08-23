@@ -89,6 +89,7 @@ def main():
     coracao_height = coracao[3]-2
     coracao_x = MAX_WIDTH + 5000
     coracao_y = randint(150, 270)
+    pontuacao_vidas = 0
 
     #moeda
     imgMoeda = pygame.image.load('images_dino/Moeda.png')
@@ -97,6 +98,7 @@ def main():
     moeda_height = moeda[3]-2
     moeda_x = MAX_WIDTH + randint(600, 2000)
     moeda_y = randint(150, 270)
+    pontuacao_moedas = 0
 
 
     # velocidade inicial
@@ -226,22 +228,28 @@ def main():
         vidas, tree_x = colisao.col_tree(tree_side, dino_x, dino_side, tree_x, dino_bott, tree_y, vidas)
         vidas, ptero_x = colisao.col_ptero(ptero_side, dino_x, dino_side, ptero_x, dino_y, ptero_bott, vidas)
         cutscene = colisao.col_crystal(crystal_side, dino_x, dino_side, crystal_x, dino_bott, crystal_y, cutscene)
-        vidas, pontuacao, coracao_x = colisao.col_coracao(coracao_side, dino_x, dino_side, coracao_x, dino_y, coracao_bott, dino_bott, coracao_y, vidas, pontuacao)
-        pontuacao, moeda_x = colisao.col_moeda(moeda_side, dino_x, dino_side, moeda_x, dino_y, moeda_bott, dino_bott, moeda_y, pontuacao)
+        vidas, pontuacao, coracao_x, pontuacao_vidas = colisao.col_coracao(coracao_side, dino_x, dino_side, coracao_x, dino_y, coracao_bott, dino_bott, coracao_y, vidas, pontuacao, pontuacao_vidas)
+        pontuacao, moeda_x, pontuacao_moedas = colisao.col_moeda(moeda_side, dino_x, dino_side, moeda_x, dino_y, moeda_bott, dino_bott, moeda_y, pontuacao, pontuacao_moedas)
         if cutscene == 1:
             pygame.quit()
             exit()
 
         # Placar
         mensagem2 = f'Pontuação: {pontuacao:07d}'
+        mensagem_moedas = f'Moedas coletadas: {pontuacao_moedas}'
+        mensagem_vidas = f'Vidas coletadas: {pontuacao_vidas}'
         placar_pontuacao = fonte.render(mensagem2, False, (0, 0, 0))
+        placar_moedas = fonte.render(mensagem_moedas, False, (0, 0, 0))
+        placar_de_coracao = fonte.render(mensagem_vidas, False, (0, 0, 0))
         pontuacao += ceil(velocidade/20)
 
         # update
         mensagem = f'Vidas: {vidas}'
         placar_vidas = fonte.render(mensagem, False, (0, 0, 0))
         screen.blit(placar_vidas, (20, 20))
-        screen.blit(placar_pontuacao, (530, 20))
+        screen.blit(placar_pontuacao, (560, 20))
+        screen.blit(placar_moedas, (140, 20))
+        screen.blit(placar_de_coracao, (360, 20))
         
         # update
         pygame.display.update()
