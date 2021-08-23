@@ -1,6 +1,12 @@
+import pygame
+
+
 class colisao():
     def col_tree(tree_side, dino_x, dino_side, tree_x, dino_bott, tree_y, vidas):
         if  tree_side >= dino_x and dino_side >= tree_x+40 and dino_bott >= tree_y:
+            pygame.mixer.music.load('sons_dino/perdendo_vida.mp3')
+            pygame.mixer.music.play(0)
+            pygame.mixer.music.set_volume(0.35)
             vidas -= 1
             tree_x = -30
         return vidas, tree_x

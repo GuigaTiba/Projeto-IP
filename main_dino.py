@@ -131,7 +131,7 @@ def main():
                     sys.exit()
 
         # vidas check/ dino morto display
-        if vidas == 0:   
+        if vidas == 0:  
             screen.blit(imgDino3, (dino_x, dino_y))
             screen.blit(imgGameover, (200, 100))
             screen.blit(imgPressanykey, (250, 250))
@@ -225,6 +225,8 @@ def main():
         moeda_bott = moeda_y+moeda_height
 
         # collision
+        vidas_antes_colisao=vidas
+        moedas_antes_colisao=pontuacao_moedas
         vidas, tree_x = colisao.col_tree(tree_side, dino_x, dino_side, tree_x, dino_bott, tree_y, vidas)
         vidas, ptero_x = colisao.col_ptero(ptero_side, dino_x, dino_side, ptero_x, dino_y, ptero_bott, vidas)
         cutscene = colisao.col_crystal(crystal_side, dino_x, dino_side, crystal_x, dino_bott, crystal_y, cutscene)
@@ -233,6 +235,21 @@ def main():
         if cutscene == 1:
             pygame.quit()
             exit()
+        if vidas_antes_colisao>vidas:
+            pygame.mixer.music.load('sons_dino/perdendo_vida2.wav')
+            pygame.mixer.music.play()
+            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.mp3' )
+            pygame.mixer.music.set_volume(0.35)
+        elif vidas_antes_colisao<vidas:
+            pygame.mixer.music.load('sons_dino/pegando_vida2.wav')
+            pygame.mixer.music.play()
+            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.mp3' )
+            pygame.mixer.music.set_volume(0.35)
+        if pontuacao_moedas>moedas_antes_colisao:
+            pygame.mixer.music.load('sons_dino/coin_coleta2.wav')
+            pygame.mixer.music.play()
+            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.mp3' )
+            pygame.mixer.music.set_volume(0.35)
 
         # Placar
         mensagem2 = f'Pontuação: {pontuacao:07d}'
