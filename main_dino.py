@@ -15,6 +15,46 @@ pygame.display.set_icon(icon)
 MAX_WIDTH = 800
 MAX_HEIGHT = 450
 
+def title_screen():
+    # dino
+    imgDino1 = pygame.image.load('images_dino/dinosaur1.png')
+    imgDino2 = pygame.image.load('images_dino/dinosaur2.png')
+    dino_bottom = 240
+    dino_x = 75
+    dino_y = dino_bottom
+
+    MAX_WIDTH = 800
+    MAX_HEIGHT = 450
+
+    # pressNkey
+    imgPressanykey = pygame.image.load('images_dino/pressanykey.png')
+
+    # FPS e screen
+    screen = pygame.display.set_mode((MAX_WIDTH, MAX_HEIGHT))
+    fps = pygame.time.Clock()
+
+    # Background
+    imgBg = pygame.image.load('images_dino/dia3.png')
+
+    title_screen_display = True
+    while title_screen_display:
+        # fill e BG
+        screen.fill((255, 255, 255))
+        screen.blit(imgBg, (0, 0))
+        screen.blit(imgPressanykey, (250, 250))
+        screen.blit(imgDino1, (dino_x, dino_y))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                title_screen_display = False
+                main()
+        # update
+        pygame.display.update()
+        fps.tick(30)
+
 def main():
     # Screen, FPS
     screen = pygame.display.set_mode((MAX_WIDTH, MAX_HEIGHT))
@@ -272,4 +312,4 @@ def main():
         pygame.display.update()
         fps.tick(30)
 
-main()
+title_screen()
