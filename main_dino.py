@@ -15,12 +15,13 @@ pygame.display.set_icon(icon)
 MAX_WIDTH = 800
 MAX_HEIGHT = 450
 
+
 def main():
-    # Screen, FPS
+    # Tela, FPS
     screen = pygame.display.set_mode((MAX_WIDTH, MAX_HEIGHT))
     fps = pygame.time.Clock()
 
-    # music
+    # Música
     pygame.mixer.music.load('sons_dino/musica_fundo_dino.mp3')
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.35)
@@ -31,7 +32,7 @@ def main():
     fonte = pygame.font.SysFont('arial', 25, False, False)
     player_alive = 1
 
-    # dinosaur
+    # Dinossauro
     imgDino1 = pygame.image.load('images_dino/dinosaur1.png')
     imgDino2 = pygame.image.load('images_dino/dinosaur2.png')
     dino = imgDino1.get_rect()
@@ -45,7 +46,7 @@ def main():
     is_bottom = True
     is_go_up = False
 
-    # dinossauro morto
+    # Dinossauro Morto
     imgDino3 = pygame.image.load('images_dino/dinosauromorto.png')
 
     # Game-over e pressanykey
@@ -54,9 +55,8 @@ def main():
 
     # Background
     imgBg = pygame.image.load('images_dino/dia3.png')
-    
 
-    # pterodatyl
+    # Pterodatyl
     imgPtero1 = pygame.image.load('images_dino/pterodatyl.png')
     imgPtero2 = pygame.image.load('images_dino/pterodatyl0.png')
     ptero = imgPtero1.get_rect()
@@ -66,14 +66,14 @@ def main():
     ptero_y = (MAX_HEIGHT - ptero_height) - 230
     wing_swap = 0
 
-    # tree
+    # Tree
     imgTree = pygame.image.load('images_dino/cacti.png')
     tree = imgTree.get_rect()
     tree_width = tree[2]
     tree_x = MAX_WIDTH
     tree_y = 270
 
-    # crystal
+    # Crystal
     imgCrystal = pygame.image.load('images_dino/crystal.png')
     crystal = imgCrystal.get_rect()
     crystal_width = crystal[2]
@@ -81,8 +81,8 @@ def main():
     crystal_y = 270
     crystal_flag = 0
     cutscene = 0
-     
-    #heart
+
+    # Coração
     imgCoracao = pygame.image.load('images_dino/coracao.png')
     coracao = imgCoracao.get_rect()
     coracao_width = coracao[2]-3
@@ -91,7 +91,7 @@ def main():
     coracao_y = randint(150, 270)
     pontuacao_vidas = 0
 
-    #moeda
+    # Moeda
     imgMoeda = pygame.image.load('images_dino/Moeda.png')
     moeda = imgMoeda.get_rect()
     moeda_width = moeda[2]-3
@@ -100,14 +100,12 @@ def main():
     moeda_y = randint(150, 270)
     pontuacao_moedas = 0
 
-
-    # velocidade inicial
+    # Velocidade inicial
     velocidade = 12
-    
+
     while True:
         screen.fill((255, 255, 255))
         screen.blit(imgBg, (0, 0))
-
 
         # event check
         for event in pygame.event.get():
@@ -131,7 +129,7 @@ def main():
                     sys.exit()
 
         # vidas check/ dino morto display
-        if vidas == 0:  
+        if vidas == 0:
             screen.blit(imgDino3, (dino_x, dino_y))
             screen.blit(imgGameover, (200, 100))
             screen.blit(imgPressanykey, (250, 250))
@@ -165,7 +163,8 @@ def main():
         moeda_x -= velocidade
 
         if tree_x < -30 or ptero_x < -60 or crystal_x < -30:
-            obstaculo_geral = obstaculo_type(MAX_WIDTH, pontuacao, crystal_flag)
+            obstaculo_geral = obstaculo_type(
+                MAX_WIDTH, pontuacao, crystal_flag)
             tree_x = obstaculo_geral[0]
             ptero_x = obstaculo_geral[1]
             crystal_x = obstaculo_geral[2]
@@ -178,12 +177,11 @@ def main():
             moeda_x = moeda_coracao[0]
             coracao_x = moeda_coracao[1]
 
-        
         # velocidade
         if velocidade <= 30 and player_alive:
             velocidade += 0.015
 
-        # draw pterodatyl
+        # Inserir Pterodatyl
         if wing_swap <= 12:
             screen.blit(imgPtero1, (ptero_x, ptero_y))
         elif wing_swap <= 25:
@@ -194,11 +192,11 @@ def main():
         ptero_side = ptero_x+ptero_width
         ptero_bott = ptero_y+ptero_height
 
-        # draw tree
+        # Inserir Tree
         screen.blit(imgTree, (tree_x, tree_y))
         tree_side = tree_x+tree_width
 
-        # draw dinosaur
+        # Inserir Dinossauro
         if leg_swap <= 8 and player_alive:
             screen.blit(imgDino1, (dino_x, dino_y))
         elif leg_swap <= 17 and player_alive:
@@ -209,46 +207,50 @@ def main():
         dino_side = dino_x+dino_width
         dino_bott = dino_y+dino_height
 
-        # draw crystal
+        # Inserir Crystal
         screen.blit(imgCrystal, (crystal_x, crystal_y))
         crystal_side = crystal_width+crystal_x
-        
-        # draw heart
+
+        # Inserir Coração
         screen.blit(imgCoracao, (coracao_x, coracao_y))
         coracao_side = coracao_width+coracao_x
         coracao_bott = coracao_height+coracao_y
 
-
-        # draw moeda
+        # Inserir Moeda
         screen.blit(imgMoeda, (moeda_x, moeda_y))
         moeda_side = moeda_width+moeda_x
         moeda_bott = moeda_y+moeda_height
 
-        # collision
-        vidas_antes_colisao=vidas
-        moedas_antes_colisao=pontuacao_moedas
-        vidas, tree_x = colisao.col_tree(tree_side, dino_x, dino_side, tree_x, dino_bott, tree_y, vidas)
-        vidas, ptero_x = colisao.col_ptero(ptero_side, dino_x, dino_side, ptero_x, dino_y, ptero_bott, vidas)
-        cutscene = colisao.col_crystal(crystal_side, dino_x, dino_side, crystal_x, dino_bott, crystal_y, cutscene)
-        vidas, pontuacao, coracao_x, pontuacao_vidas = colisao.col_coracao(coracao_side, dino_x, dino_side, coracao_x, dino_y, coracao_bott, dino_bott, coracao_y, vidas, pontuacao, pontuacao_vidas)
-        pontuacao, moeda_x, pontuacao_moedas = colisao.col_moeda(moeda_side, dino_x, dino_side, moeda_x, dino_y, moeda_bott, dino_bott, moeda_y, pontuacao, pontuacao_moedas)
+        # Colisão
+        vidas_antes_colisao = vidas
+        moedas_antes_colisao = pontuacao_moedas
+        vidas, tree_x = colisao.col_tree(
+            tree_side, dino_x, dino_side, tree_x, dino_bott, tree_y, vidas)
+        vidas, ptero_x = colisao.col_ptero(
+            ptero_side, dino_x, dino_side, ptero_x, dino_y, ptero_bott, vidas)
+        cutscene = colisao.col_crystal(
+            crystal_side, dino_x, dino_side, crystal_x, dino_bott, crystal_y, cutscene)
+        vidas, pontuacao, coracao_x, pontuacao_vidas = colisao.col_coracao(
+            coracao_side, dino_x, dino_side, coracao_x, dino_y, coracao_bott, dino_bott, coracao_y, vidas, pontuacao, pontuacao_vidas)
+        pontuacao, moeda_x, pontuacao_moedas = colisao.col_moeda(
+            moeda_side, dino_x, dino_side, moeda_x, dino_y, moeda_bott, dino_bott, moeda_y, pontuacao, pontuacao_moedas)
         if cutscene == 1:
             pygame.quit()
             exit()
-        if vidas_antes_colisao>vidas:
+        if vidas_antes_colisao > vidas:
             pygame.mixer.music.load('sons_dino/perdendo_vida2.wav')
             pygame.mixer.music.play()
-            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.mp3' )
+            pygame.mixer.music.queue('sons_dino/musica_fundo_dino.mp3')
             pygame.mixer.music.set_volume(0.35)
-        elif vidas_antes_colisao<vidas:
+        elif vidas_antes_colisao < vidas:
             pygame.mixer.music.load('sons_dino/pegando_vida2.wav')
             pygame.mixer.music.play()
-            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.mp3' )
+            pygame.mixer.music.queue('sons_dino/musica_fundo_dino.mp3')
             pygame.mixer.music.set_volume(0.35)
-        if pontuacao_moedas>moedas_antes_colisao:
+        if pontuacao_moedas > moedas_antes_colisao:
             pygame.mixer.music.load('sons_dino/coin_coleta2.wav')
             pygame.mixer.music.play()
-            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.mp3' )
+            pygame.mixer.music.queue('sons_dino/musica_fundo_dino.mp3')
             pygame.mixer.music.set_volume(0.35)
 
         # Placar
@@ -260,16 +262,17 @@ def main():
         placar_de_coracao = fonte.render(mensagem_vidas, False, (0, 0, 0))
         pontuacao += ceil(velocidade/20)
 
-        # update
+        # Update
         mensagem = f'Vidas: {vidas}'
         placar_vidas = fonte.render(mensagem, False, (0, 0, 0))
         screen.blit(placar_vidas, (20, 20))
         screen.blit(placar_pontuacao, (560, 20))
         screen.blit(placar_moedas, (140, 20))
         screen.blit(placar_de_coracao, (360, 20))
-        
-        # update
+
+        # Update
         pygame.display.update()
         fps.tick(30)
+
 
 main()
