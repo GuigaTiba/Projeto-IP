@@ -6,57 +6,8 @@ from pygame.constants import KEYDOWN, K_DOWN
 from obstaculo_dino import obstaculo_type
 from moeda_ou_coração import choices
 from colisão_dino import colisao
-from calegario_mecanica import main_calega
 
-# Iniciar Pygame
-pygame.init()
-pygame.display.set_caption('images_dino/Calegaur.io')
-icon = pygame.image.load('images_dino/logodinosaur.png')
-pygame.display.set_icon(icon)
-MAX_WIDTH = 800
-MAX_HEIGHT = 450
-
-def title_screen():
-    # dino
-    imgDino1 = pygame.image.load('images_dino/dinosaur1.png')
-    imgDino2 = pygame.image.load('images_dino/dinosaur2.png')
-    dino_bottom = 240
-    dino_x = 75
-    dino_y = dino_bottom
-
-    MAX_WIDTH = 800
-    MAX_HEIGHT = 450
-
-    # pressNkey
-    imgPressanykey = pygame.image.load('images_dino/pressanykey.png')
-
-    # FPS e screen
-    screen = pygame.display.set_mode((MAX_WIDTH, MAX_HEIGHT))
-    fps = pygame.time.Clock()
-
-    # Background
-    imgBg = pygame.image.load('images_dino/dia3.png')
-
-    title_screen_display = True
-    while title_screen_display:
-        # fill e BG
-        screen.fill((255, 255, 255))
-        screen.blit(imgBg, (0, 0))
-        screen.blit(imgPressanykey, (250, 250))
-        screen.blit(imgDino1, (dino_x, dino_y))
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                title_screen_display = False
-                main()
-        # update
-        pygame.display.update()
-        fps.tick(30)
-
-def main():
+def main_calega(MAX_WIDTH, MAX_HEIGHT):
     # Screen, FPS
     screen = pygame.display.set_mode((MAX_WIDTH, MAX_HEIGHT))
     fps = pygame.time.Clock()
@@ -73,8 +24,9 @@ def main():
     player_alive = 1
 
     # dinosaur
-    imgDino1 = pygame.image.load('images_dino/dinosaur1.png')
-    imgDino2 = pygame.image.load('images_dino/dinosaur2.png')
+    imgDino1 = pygame.image.load('images_jetpack/calegario (2).png')
+    imgDino2 = pygame.image.load('images_jetpack/calegario (5).png')
+    imgDino3 = pygame.image.load('images_jetpack/calegario (6).png')
     dino = imgDino1.get_rect()
     dino_height = dino[3]
     dino_width = dino[2]
@@ -87,7 +39,7 @@ def main():
     is_go_up = False
 
     # dinossauro morto
-    imgDino3 = pygame.image.load('images_dino/dinosauromorto.png')
+    imgDino_morto = pygame.image.load('images_dino/dinosauromorto.png')
 
     # Game-over e pressanykey
     imgGameover = pygame.image.load('images_dino/gameover.png')
@@ -122,7 +74,7 @@ def main():
     crystal_y = 270
     crystal_flag = 0
     cutscene = 0
-     
+    
     #heart
     imgCoracao = pygame.image.load('images_dino/coracao.png')
     coracao = imgCoracao.get_rect()
@@ -149,7 +101,6 @@ def main():
         screen.fill((255, 255, 255))
         screen.blit(imgBg, (0, 0))
 
-
         # event check
         for event in pygame.event.get():
             if event.type == pygame.QUIT and player_alive:
@@ -166,14 +117,14 @@ def main():
                         is_go_up = False
             if not player_alive:
                 if event.type == KEYDOWN:
-                    main()
+                    main_calega()
                 elif event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
 
         # vidas check/ dino morto display
         if vidas == 0:  
-            screen.blit(imgDino3, (dino_x, dino_y))
+            screen.blit(imgDino_morto, (dino_x, dino_y))
             screen.blit(imgGameover, (200, 100))
             screen.blit(imgPressanykey, (250, 250))
             player_alive = False
@@ -240,12 +191,16 @@ def main():
         tree_side = tree_x+tree_width
 
         # draw dinosaur
-        if leg_swap <= 8 and player_alive:
+        if leg_swap <= 7 and player_alive:
             screen.blit(imgDino1, (dino_x, dino_y))
-        elif leg_swap <= 17 and player_alive:
+        elif leg_swap <= 11 and player_alive:
             screen.blit(imgDino2, (dino_x, dino_y))
-            if leg_swap == 17:
+        elif leg_swap <= 18:
+            screen.blit(imgDino3, (dino_x, dino_y))
+        elif leg_swap <= 22:   
+            if leg_swap == 22:    
                 leg_swap = 0
+            screen.blit(imgDino2, (dino_x, dino_y))
         leg_swap += 1
         dino_side = dino_x+dino_width
         dino_bott = dino_y+dino_height
@@ -274,10 +229,6 @@ def main():
         vidas, pontuacao, coracao_x, pontuacao_vidas = colisao.col_coracao(coracao_side, dino_x, dino_side, coracao_x, dino_y, coracao_bott, dino_bott, coracao_y, vidas, pontuacao, pontuacao_vidas)
         pontuacao, moeda_x, pontuacao_moedas = colisao.col_moeda(moeda_side, dino_x, dino_side, moeda_x, dino_y, moeda_bott, dino_bott, moeda_y, pontuacao, pontuacao_moedas)
         
-        if cutscene == 1:
-            cutscene = 0
-            main_calega(MAX_WIDTH, MAX_HEIGHT)
-
         if vidas_antes_colisao>vidas:
             pygame.mixer.music.load('sons_dino/perdendo_vida2.wav')
             pygame.mixer.music.play()
@@ -314,5 +265,3 @@ def main():
         # update
         pygame.display.update()
         fps.tick(30)
-
-title_screen()
