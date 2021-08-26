@@ -41,9 +41,6 @@ def main_calega():
     is_bottom = True
     is_go_up = False
 
-    # dinossauro morto
-    imgDino_morto = pygame.image.load('images_dino/dinosauromorto.png')
-
     # Game-over e pressanykey
     imgGameover = pygame.image.load('images_dino/gameover.png')
     imgPressanykey = pygame.image.load('images_dino/pressanykey.png')
@@ -126,7 +123,6 @@ def main_calega():
 
         # vidas check/ dino morto display
         if vidas == 0:  
-            screen.blit(imgDino_morto, (dino_x, dino_y+20))
             screen.blit(imgGameover, (200, 100))
             screen.blit(imgPressanykey, (250, 250))
             player_alive = False
