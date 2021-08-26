@@ -276,7 +276,7 @@ def main():
         
         if cutscene == 1:
             cutscene = 0
-            main_calega(MAX_WIDTH, MAX_HEIGHT)
+            main_calega()
 
         if vidas_antes_colisao>vidas:
             pygame.mixer.music.load('sons_dino/perdendo_vida2.wav')

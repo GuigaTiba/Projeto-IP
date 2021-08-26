@@ -7,8 +7,10 @@ from obstaculo_dino import obstaculo_type
 from moeda_ou_coração import choices
 from colisão_dino import colisao
 
-def main_calega(MAX_WIDTH, MAX_HEIGHT):
+def main_calega():
     # Screen, FPS
+    MAX_WIDTH = 800
+    MAX_HEIGHT = 450
     screen = pygame.display.set_mode((MAX_WIDTH, MAX_HEIGHT))
     fps = pygame.time.Clock()
 
@@ -30,10 +32,10 @@ def main_calega(MAX_WIDTH, MAX_HEIGHT):
     dino = imgDino1.get_rect()
     dino_height = dino[3]
     dino_width = dino[2]
-    dino_bottom = 240
+    dino_bottom = 210
     dino_x = 75
     dino_y = dino_bottom
-    jump_top = 70
+    jump_top = 50
     leg_swap = 0
     is_bottom = True
     is_go_up = False
@@ -56,7 +58,7 @@ def main_calega(MAX_WIDTH, MAX_HEIGHT):
     ptero_height = ptero[3]
     ptero_width = ptero[2]
     ptero_x = MAX_WIDTH + 5000
-    ptero_y = (MAX_HEIGHT - ptero_height) - 230
+    ptero_y = (MAX_HEIGHT - ptero_height) - 260
     wing_swap = 0
 
     # tree
@@ -124,7 +126,7 @@ def main_calega(MAX_WIDTH, MAX_HEIGHT):
 
         # vidas check/ dino morto display
         if vidas == 0:  
-            screen.blit(imgDino_morto, (dino_x, dino_y))
+            screen.blit(imgDino_morto, (dino_x, dino_y+20))
             screen.blit(imgGameover, (200, 100))
             screen.blit(imgPressanykey, (250, 250))
             player_alive = False
@@ -195,19 +197,15 @@ def main_calega(MAX_WIDTH, MAX_HEIGHT):
             screen.blit(imgDino1, (dino_x, dino_y))
         elif leg_swap <= 11 and player_alive:
             screen.blit(imgDino2, (dino_x, dino_y))
-        elif leg_swap <= 18:
+        elif leg_swap <= 18 and player_alive:
             screen.blit(imgDino3, (dino_x, dino_y))
-        elif leg_swap <= 22:   
+        elif leg_swap <= 22 and player_alive:   
             if leg_swap == 22:    
                 leg_swap = 0
             screen.blit(imgDino2, (dino_x, dino_y))
         leg_swap += 1
         dino_side = dino_x+dino_width
         dino_bott = dino_y+dino_height
-
-        # draw crystal
-        screen.blit(imgCrystal, (crystal_x, crystal_y))
-        crystal_side = crystal_width+crystal_x
         
         # draw heart
         screen.blit(imgCoracao, (coracao_x, coracao_y))
@@ -225,7 +223,7 @@ def main_calega(MAX_WIDTH, MAX_HEIGHT):
         moedas_antes_colisao=pontuacao_moedas
         vidas, tree_x = colisao.col_tree(tree_side, dino_x, dino_side, tree_x, dino_bott, tree_y, vidas)
         vidas, ptero_x = colisao.col_ptero(ptero_side, dino_x, dino_side, ptero_x, dino_y, ptero_bott, vidas)
-        cutscene = colisao.col_crystal(crystal_side, dino_x, dino_side, crystal_x, dino_bott, crystal_y, cutscene)
+        cutscene = colisao.col_crystal(crystal_width, dino_x, dino_side, crystal_x, dino_bott, crystal_y, cutscene)
         vidas, pontuacao, coracao_x, pontuacao_vidas = colisao.col_coracao(coracao_side, dino_x, dino_side, coracao_x, dino_y, coracao_bott, dino_bott, coracao_y, vidas, pontuacao, pontuacao_vidas)
         pontuacao, moeda_x, pontuacao_moedas = colisao.col_moeda(moeda_side, dino_x, dino_side, moeda_x, dino_y, moeda_bott, dino_bott, moeda_y, pontuacao, pontuacao_moedas)
         
