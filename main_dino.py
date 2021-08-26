@@ -62,7 +62,7 @@ def main():
     fps = pygame.time.Clock()
 
     # music
-    pygame.mixer.music.load('sons_dino/musica_fundo_dino.mp3')
+    pygame.mixer.music.load('sons_dino/musica_fundo_dino.wav')
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.35)
 
@@ -281,17 +281,17 @@ def main():
         if vidas_antes_colisao>vidas:
             pygame.mixer.music.load('sons_dino/perdendo_vida2.wav')
             pygame.mixer.music.play()
-            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.mp3' )
+            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.wav' )
             pygame.mixer.music.set_volume(0.35)
         elif vidas_antes_colisao<vidas:
             pygame.mixer.music.load('sons_dino/pegando_vida2.wav')
             pygame.mixer.music.play()
-            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.mp3' )
+            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.wav' )
             pygame.mixer.music.set_volume(0.35)
         if pontuacao_moedas>moedas_antes_colisao:
             pygame.mixer.music.load('sons_dino/coin_coleta2.wav')
             pygame.mixer.music.play()
-            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.mp3' )
+            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.wav' )
             pygame.mixer.music.set_volume(0.35)
 
         # Placar

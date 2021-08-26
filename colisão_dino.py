@@ -4,9 +4,6 @@ import pygame
 class colisao():
     def col_tree(tree_side, dino_x, dino_side, tree_x, dino_bott, tree_y, vidas):
         if  tree_side >= dino_x and dino_side >= tree_x+40 and dino_bott >= tree_y:
-            pygame.mixer.music.load('sons_dino/perdendo_vida.mp3')
-            pygame.mixer.music.play(0)
-            pygame.mixer.music.set_volume(0.35)
             vidas -= 1
             tree_x = -30
         return vidas, tree_x
@@ -14,7 +11,7 @@ class colisao():
     def col_ptero(ptero_side, dino_x, dino_side, ptero_x, dino_y, ptero_bott, vidas):
         if ptero_side >= dino_x and dino_side >= ptero_x+40 and dino_y <= ptero_bott:
             vidas -= 1
-            ptero_x = -60
+            ptero_x = -100
         return vidas, ptero_x
 
     def col_crystal(crystal_side, dino_x, dino_side, crystal_x, dino_bott, crystal_y, cutscene):

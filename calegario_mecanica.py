@@ -15,7 +15,7 @@ def main_calega():
     fps = pygame.time.Clock()
 
     # music
-    pygame.mixer.music.load('sons_dino/musica_fundo_dino.mp3')
+    pygame.mixer.music.load('sons_dino/musica_fundo_dino.wav')
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.35)
 
@@ -66,7 +66,7 @@ def main_calega():
     tree = imgTree.get_rect()
     tree_width = tree[2]
     tree_x = MAX_WIDTH
-    tree_y = 345
+    tree_y = 350
 
     # crystal
     imgCrystal = pygame.image.load('images_dino/crystal.png')
@@ -187,10 +187,8 @@ def main_calega():
         tree_side = tree_x+tree_width
 
         # draw dinosaur
-        if player_alive:
-            if dino_y < dino_bottom:
-                 screen.blit(imgDino4, (dino_x, dino_y))
-            else:
+        if player_alive == True:
+            if dino_y >= dino_bottom:
                 if leg_swap <= 7:
                     screen.blit(imgDino1, (dino_x, dino_y))
                 elif leg_swap <= 11:
@@ -201,8 +199,10 @@ def main_calega():
                     if leg_swap == 22:
                         leg_swap = 0   
                     screen.blit(imgDino2, (dino_x, dino_y))
+            else:
+                screen.blit(imgDino4, (dino_x, dino_y))
             
-            if leg_swap >= 22:
+            if leg_swap > 22:
                 leg_swap = 0
         
         leg_swap += 1
@@ -232,17 +232,17 @@ def main_calega():
         if vidas_antes_colisao>vidas:
             pygame.mixer.music.load('sons_dino/perdendo_vida2.wav')
             pygame.mixer.music.play()
-            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.mp3' )
+            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.wav' )
             pygame.mixer.music.set_volume(0.35)
         elif vidas_antes_colisao<vidas:
             pygame.mixer.music.load('sons_dino/pegando_vida2.wav')
             pygame.mixer.music.play()
-            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.mp3' )
+            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.wav' )
             pygame.mixer.music.set_volume(0.35)
         if pontuacao_moedas>moedas_antes_colisao:
             pygame.mixer.music.load('sons_dino/coin_coleta2.wav')
             pygame.mixer.music.play()
-            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.mp3' )
+            pygame.mixer.music.queue ( 'sons_dino/musica_fundo_dino.wav' )
             pygame.mixer.music.set_volume(0.35)
 
         # Placar
