@@ -3,7 +3,7 @@ import sys
 from random import randint
 from math import ceil
 from pygame.constants import KEYDOWN, K_DOWN
-from obstaculo_dino import obstaculo_type
+from obstaculo_calega import obstaculo_type
 from moeda_ou_coração import choices
 from colisão_dino import colisao
 
@@ -25,17 +25,17 @@ def main_calega():
     fonte = pygame.font.SysFont('arial', 25, False, False)
     player_alive = 1
 
-    # dinosaur
-    imgDino1 = pygame.image.load('images_jetpack/calegario (2).png')
-    imgDino2 = pygame.image.load('images_jetpack/calegario (5).png')
-    imgDino3 = pygame.image.load('images_jetpack/calegario (6).png')
-    imgDino4 = pygame.image.load('images_jetpack/calegauro_pulando.png')
-    dino = imgDino1.get_rect()
-    dino_height = dino[3]
-    dino_width = dino[2]
-    dino_bottom = 290
-    dino_x = 75
-    dino_y = dino_bottom
+    # calegario
+    imgCalega1 = pygame.image.load('images_jetpack/calegario (2).png')
+    imgCalega2 = pygame.image.load('images_jetpack/calegario (5).png')
+    imgCalega3 = pygame.image.load('images_jetpack/calegario (6).png')
+    imgCalega4 = pygame.image.load('images_jetpack/calegauro_pulando.png')
+    calega = imgCalega1.get_rect()
+    calega_height = calega[3]
+    calega_width = calega[2]
+    calega_bottom = 290
+    calega_x = 75
+    calega_y = calega_bottom
     jump_top = 130
     leg_swap = 0
     is_bottom = True
@@ -49,30 +49,20 @@ def main_calega():
     imgBg = pygame.image.load('images_jetpack/fundo.png')
     
 
-    # pterodatyl
-    imgPtero1 = pygame.image.load('images_jetpack/pngwing.com.png')
-    ptero = imgPtero1.get_rect()
-    ptero_height = ptero[3]
-    ptero_width = ptero[2]
-    ptero_x = MAX_WIDTH + 5000
-    ptero_y = (MAX_HEIGHT - ptero_height) - 180
-    wing_swap = 0
+    # nave
+    imgNave1 = pygame.image.load('images_jetpack/pngwing.com.png')
+    nave = imgNave1.get_rect()
+    nave_height = nave[3]
+    nave_width = nave[2]
+    nave_x = MAX_WIDTH + 5000
+    nave_y = (MAX_HEIGHT - nave_height) - 180
 
-    # tree
-    imgTree = pygame.image.load('images_jetpack/New_Piskel_1.png')
-    tree = imgTree.get_rect()
-    tree_width = tree[2]
-    tree_x = MAX_WIDTH
-    tree_y = 350
-
-    # crystal
-    imgCrystal = pygame.image.load('images_dino/crystal.png')
-    crystal = imgCrystal.get_rect()
-    crystal_width = crystal[2]
-    crystal_x = MAX_WIDTH + 5000
-    crystal_y = 270
-    crystal_flag = 0
-    cutscene = 0
+    # tronco
+    imgTronco = pygame.image.load('images_jetpack/New_Piskel_1.png')
+    tronco = imgTronco.get_rect()
+    tronco_width = tronco[2]
+    tronco_x = MAX_WIDTH
+    tronco_y = 350
     
     #heart
     imgCoracao = pygame.image.load('images_dino/coracao.png')
@@ -112,7 +102,7 @@ def main_calega():
                         is_bottom = False
                 elif event.key == pygame.K_DOWN:
                     if is_bottom == False:
-                        dino_y += 5
+                        calega_y += 5
                         is_go_up = False
             if not player_alive:
                 if event.type == KEYDOWN:
@@ -121,7 +111,7 @@ def main_calega():
                     pygame.quit()
                     sys.exit()
 
-        # vidas check/ dino morto display
+        # vidas check
         if vidas == 0:  
             screen.blit(imgGameover, (200, 100))
             screen.blit(imgPressanykey, (250, 250))
@@ -129,40 +119,35 @@ def main_calega():
         # pressed
         if pygame.key.get_pressed()[K_DOWN]:
             if is_bottom == False:
-                dino_y += 5
+                calega_y += 5
 
-        # dinosaur movement
+        # calegario movement
         if is_go_up:
-            dino_y -= 10.0
+            calega_y -= 10.0
         elif not is_go_up and not is_bottom:
-            dino_y += 10.0
+            calega_y += 10.0
 
-        # dinosaur position check
-        if is_go_up and dino_y <= jump_top:
+        # calegario position check
+        if is_go_up and calega_y <= jump_top:
             is_go_up = False
 
-        if not is_bottom and dino_y >= dino_bottom:
+        if not is_bottom and calega_y >= calega_bottom:
             is_bottom = True
-            dino_y = dino_bottom
+            calega_y = calega_bottom
 
-        # movimento do cacto e pterodatyl
+        # movimento do Tronco e nave
         if not player_alive:
             velocidade = 0
-        tree_x -= velocidade
-        ptero_x -= velocidade
-        crystal_x -= 13.5
+        tronco_x -= velocidade
+        nave_x -= velocidade
         coracao_x -= velocidade
         moeda_x -= velocidade
 
-        if tree_x < -30 or ptero_x < -60 or crystal_x < -30:
-            obstaculo_geral = obstaculo_type(MAX_WIDTH, pontuacao, crystal_flag)
-            tree_x = obstaculo_geral[0]
-            ptero_x = obstaculo_geral[1]
-            crystal_x = obstaculo_geral[2]
-            try:
-                crystal_flag = obstaculo_geral[3]
-            except IndexError:
-                True
+        if tronco_x < -30 or nave_x < -60:
+            obstaculo_geral = obstaculo_type(MAX_WIDTH, pontuacao)
+            tronco_x = obstaculo_geral[0]
+            nave_x = obstaculo_geral[1]
+            
         if moeda_x < 0 or coracao_x < 0:
             moeda_coracao = choices(MAX_WIDTH)
             moeda_x = moeda_coracao[0]
@@ -173,37 +158,37 @@ def main_calega():
         if velocidade <= 35 and player_alive:
             velocidade += 0.015
 
-        # draw pterodatyl
-        screen.blit(imgPtero1, (ptero_x, ptero_y))
-        ptero_side = ptero_x+ptero_width
-        ptero_bott = ptero_y+ptero_height
+        # draw nave
+        screen.blit(imgNave1, (nave_x, nave_y))
+        nave_side = nave_x+nave_width
+        nave_bott = nave_y+nave_height
 
-        # draw tree
-        screen.blit(imgTree, (tree_x, tree_y))
-        tree_side = tree_x+tree_width
+        # draw tronco
+        screen.blit(imgTronco, (tronco_x, tronco_y))
+        tronco_side = tronco_x+tronco_width
 
-        # draw dinosaur
+        # draw calegario
         if player_alive == True:
-            if dino_y >= dino_bottom:
+            if calega_y >= calega_bottom:
                 if leg_swap <= 7:
-                    screen.blit(imgDino1, (dino_x, dino_y))
+                    screen.blit(imgCalega1, (calega_x, calega_y))
                 elif leg_swap <= 11:
-                    screen.blit(imgDino2, (dino_x, dino_y))
+                    screen.blit(imgCalega2, (calega_x, calega_y))
                 elif leg_swap <= 18:
-                    screen.blit(imgDino3, (dino_x, dino_y))
+                    screen.blit(imgCalega3, (calega_x, calega_y))
                 elif leg_swap <= 22:
                     if leg_swap == 22:
                         leg_swap = 0   
-                    screen.blit(imgDino2, (dino_x, dino_y))
+                    screen.blit(imgCalega2, (calega_x, calega_y))
             else:
-                screen.blit(imgDino4, (dino_x, dino_y))
+                screen.blit(imgCalega4, (calega_x, calega_y))
             
             if leg_swap > 22:
                 leg_swap = 0
         
         leg_swap += 1
-        dino_side = dino_x+dino_width
-        dino_bott = dino_y+dino_height
+        calega_side = calega_x+calega_width
+        calega_bott = calega_y+calega_height
         
         # draw heart
         screen.blit(imgCoracao, (coracao_x, coracao_y))
@@ -219,11 +204,10 @@ def main_calega():
         # collision
         vidas_antes_colisao=vidas
         moedas_antes_colisao=pontuacao_moedas
-        vidas, tree_x = colisao.col_tree(tree_side, dino_x, dino_side, tree_x, dino_bott, tree_y, vidas)
-        vidas, ptero_x = colisao.col_ptero(ptero_side, dino_x, dino_side, ptero_x, dino_y, ptero_bott, vidas)
-        cutscene = colisao.col_crystal(crystal_width, dino_x, dino_side, crystal_x, dino_bott, crystal_y, cutscene)
-        vidas, pontuacao, coracao_x, pontuacao_vidas = colisao.col_coracao(coracao_side, dino_x, dino_side, coracao_x, dino_y, coracao_bott, dino_bott, coracao_y, vidas, pontuacao, pontuacao_vidas)
-        pontuacao, moeda_x, pontuacao_moedas = colisao.col_moeda(moeda_side, dino_x, dino_side, moeda_x, dino_y, moeda_bott, dino_bott, moeda_y, pontuacao, pontuacao_moedas)
+        vidas, tronco_x = colisao.col_tree(tronco_side, calega_x, calega_side, tronco_x, calega_bott, tronco_y, vidas)
+        vidas, nave_x = colisao.col_ptero(nave_side, calega_x, calega_side, nave_x, calega_y, nave_bott, vidas)
+        vidas, pontuacao, coracao_x, pontuacao_vidas = colisao.col_coracao(coracao_side, calega_x, calega_side, coracao_x, calega_y, coracao_bott, calega_bott, coracao_y, vidas, pontuacao, pontuacao_vidas)
+        pontuacao, moeda_x, pontuacao_moedas = colisao.col_moeda(moeda_side, calega_x, calega_side, moeda_x, calega_y, moeda_bott, calega_bott, moeda_y, pontuacao, pontuacao_moedas)
         
         if vidas_antes_colisao>vidas:
             pygame.mixer.music.load('sons_dino/perdendo_vida2.wav')
