@@ -221,7 +221,7 @@ def main():
 
         
         # velocidade
-        if velocidade <= 30 and player_alive:
+        if velocidade <= 35 and player_alive:
             velocidade += 0.015
 
         # draw pterodatyl

@@ -33,10 +33,10 @@ def main_calega():
     dino = imgDino1.get_rect()
     dino_height = dino[3]
     dino_width = dino[2]
-    dino_bottom = 210
+    dino_bottom = 290
     dino_x = 75
     dino_y = dino_bottom
-    jump_top = 50
+    jump_top = 130
     leg_swap = 0
     is_bottom = True
     is_go_up = False
@@ -49,25 +49,24 @@ def main_calega():
     imgPressanykey = pygame.image.load('images_dino/pressanykey.png')
 
     # Background
-    imgBg = pygame.image.load('images_dino/dia3.png')
+    imgBg = pygame.image.load('images_jetpack/fundo.png')
     
 
     # pterodatyl
-    imgPtero1 = pygame.image.load('images_dino/pterodatyl.png')
-    imgPtero2 = pygame.image.load('images_dino/pterodatyl0.png')
+    imgPtero1 = pygame.image.load('images_jetpack/pngwing.com.png')
     ptero = imgPtero1.get_rect()
     ptero_height = ptero[3]
     ptero_width = ptero[2]
     ptero_x = MAX_WIDTH + 5000
-    ptero_y = (MAX_HEIGHT - ptero_height) - 260
+    ptero_y = (MAX_HEIGHT - ptero_height) - 180
     wing_swap = 0
 
     # tree
-    imgTree = pygame.image.load('images_dino/cacti.png')
+    imgTree = pygame.image.load('images_jetpack/New_Piskel_1.png')
     tree = imgTree.get_rect()
     tree_width = tree[2]
     tree_x = MAX_WIDTH
-    tree_y = 270
+    tree_y = 345
 
     # crystal
     imgCrystal = pygame.image.load('images_dino/crystal.png')
@@ -84,7 +83,7 @@ def main_calega():
     coracao_width = coracao[2]-3
     coracao_height = coracao[3]-3
     coracao_x = MAX_WIDTH + 5000
-    coracao_y = randint(150, 270)
+    coracao_y = randint(230, 350)
     pontuacao_vidas = 0
 
     #moeda
@@ -93,7 +92,7 @@ def main_calega():
     moeda_width = moeda[2]-3
     moeda_height = moeda[3]-3
     moeda_x = MAX_WIDTH + randint(600, 2000)
-    moeda_y = randint(150, 270)
+    moeda_y = randint(230, 350)
     pontuacao_moedas = 0
 
 
@@ -175,17 +174,11 @@ def main_calega():
 
         
         # velocidade
-        if velocidade <= 30 and player_alive:
+        if velocidade <= 35 and player_alive:
             velocidade += 0.015
 
         # draw pterodatyl
-        if wing_swap <= 12:
-            screen.blit(imgPtero1, (ptero_x, ptero_y))
-        elif wing_swap <= 25:
-            screen.blit(imgPtero2, (ptero_x, ptero_y))
-            if wing_swap == 25:
-                wing_swap = 0
-        wing_swap += 1
+        screen.blit(imgPtero1, (ptero_x, ptero_y))
         ptero_side = ptero_x+ptero_width
         ptero_bott = ptero_y+ptero_height
 
@@ -256,14 +249,14 @@ def main_calega():
         mensagem2 = f'Pontuação: {pontuacao:07d}'
         mensagem_moedas = f'Moedas coletadas: {pontuacao_moedas}'
         mensagem_vidas = f'Vidas coletadas: {pontuacao_vidas}'
-        placar_pontuacao = fonte.render(mensagem2, False, (0, 0, 0))
-        placar_moedas = fonte.render(mensagem_moedas, False, (0, 0, 0))
-        placar_de_coracao = fonte.render(mensagem_vidas, False, (0, 0, 0))
+        placar_pontuacao = fonte.render(mensagem2, False, (180, 180, 180))
+        placar_moedas = fonte.render(mensagem_moedas, False, (180, 180, 180))
+        placar_de_coracao = fonte.render(mensagem_vidas, False, (180, 180, 180))
         pontuacao += ceil(velocidade/20)
 
         # update
         mensagem = f'Vidas: {vidas}'
-        placar_vidas = fonte.render(mensagem, False, (0, 0, 0))
+        placar_vidas = fonte.render(mensagem, False, (180, 180, 180))
         screen.blit(placar_vidas, (20, 20))
         screen.blit(placar_pontuacao, (560, 20))
         screen.blit(placar_moedas, (140, 20))
