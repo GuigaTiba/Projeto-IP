@@ -29,6 +29,7 @@ def main_calega():
     imgDino1 = pygame.image.load('images_jetpack/calegario (2).png')
     imgDino2 = pygame.image.load('images_jetpack/calegario (5).png')
     imgDino3 = pygame.image.load('images_jetpack/calegario (6).png')
+    imgDino4 = pygame.image.load('images_jetpack/calegauro_pulando.png')
     dino = imgDino1.get_rect()
     dino_height = dino[3]
     dino_width = dino[2]
@@ -193,16 +194,24 @@ def main_calega():
         tree_side = tree_x+tree_width
 
         # draw dinosaur
-        if leg_swap <= 7 and player_alive:
-            screen.blit(imgDino1, (dino_x, dino_y))
-        elif leg_swap <= 11 and player_alive:
-            screen.blit(imgDino2, (dino_x, dino_y))
-        elif leg_swap <= 18 and player_alive:
-            screen.blit(imgDino3, (dino_x, dino_y))
-        elif leg_swap <= 22 and player_alive:   
-            if leg_swap == 22:    
+        if player_alive:
+            if dino_y < dino_bottom:
+                 screen.blit(imgDino4, (dino_x, dino_y))
+            else:
+                if leg_swap <= 7:
+                    screen.blit(imgDino1, (dino_x, dino_y))
+                elif leg_swap <= 11:
+                    screen.blit(imgDino2, (dino_x, dino_y))
+                elif leg_swap <= 18:
+                    screen.blit(imgDino3, (dino_x, dino_y))
+                elif leg_swap <= 22:
+                    if leg_swap == 22:
+                        leg_swap = 0   
+                    screen.blit(imgDino2, (dino_x, dino_y))
+            
+            if leg_swap >= 22:
                 leg_swap = 0
-            screen.blit(imgDino2, (dino_x, dino_y))
+        
         leg_swap += 1
         dino_side = dino_x+dino_width
         dino_bott = dino_y+dino_height
